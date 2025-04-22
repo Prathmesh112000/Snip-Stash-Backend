@@ -7,15 +7,19 @@ const asyncHandler = require('express-async-handler');
 const createBlog = asyncHandler(async (req, res) => {
   const { title, url, description, category, tags, notes } = req.body;
 
-  const blog = await Blog.create({
-    title,
-    url,
-    description,
-    category,
-    tags,
-    notes,
+  // Create blog with only the fields that are provided
+  const blogData = {
     user: req.user._id,
-  });
+  };
+
+  if (title) blogData.title = title;
+  if (url) blogData.url = url;
+  if (description) blogData.description = description;
+  if (category) blogData.category = category;
+  if (tags) blogData.tags = tags;
+  if (notes) blogData.notes = notes;
+
+  const blog = await Blog.create(blogData);
 
   res.status(201).json(blog);
 });
@@ -107,7 +111,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
     throw new Error('Not authorized');
   }
 
-  await blog.remove();
+  await Blog.findByIdAndDelete(req.params.id);
   res.json({ message: 'Blog removed' });
 });
 

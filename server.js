@@ -24,6 +24,7 @@ app.get('/test', (req, res) => {
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/snippets', require('./routes/snippetRoutes'));
+app.use('/api/blogs', require('./routes/blogRoutes'));
 
 // Basic route
 app.get('/', (req, res) => res.send('SnipStash API is running'));
@@ -43,4 +44,6 @@ app.listen(PORT, () => {
   console.log('POST /api/auth/send-otp');
   console.log('POST /api/auth/verify-otp');
   console.log('GET /api/auth/profile');
+  console.log('POST /api/blogs');
+  console.log('GET /api/blogs');
 });
