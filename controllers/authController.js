@@ -55,12 +55,35 @@ const sendOTP = async (req, res) => {
     }
 
     // Send OTP email
-    // await transporter.sendMail({
-    //   from: process.env.EMAIL_USER,
-    //   to: email,
-    //   subject: 'Your SnipStash OTP',
-    //   text: `Your OTP is: ${otp}. It will expire in 10 minutes.`,
-    // });
+    await transporter.sendMail({
+      from: `SnipStash <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Your SnipStash Verification Code',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #3182ce; margin: 0;">SnipStash</h1>
+            <p style="color: #4a5568; margin-top: 5px;">Your Code Snippet Manager</p>
+          </div>
+          
+          <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h2 style="color: #2d3748; margin-top: 0;">Verification Code</h2>
+            <p style="color: #4a5568; margin-bottom: 20px;">Your verification code for SnipStash is:</p>
+            
+            <div style="background-color: #ebf8ff; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 20px;">
+              <span style="font-size: 24px; font-weight: bold; color: #3182ce; letter-spacing: 2px;">${otp}</span>
+            </div>
+            
+            <p style="color: #718096; font-size: 14px;">This code will expire in 10 minutes.</p>
+            <p style="color: #718096; font-size: 14px;">If you didn't request this code, you can safely ignore this email.</p>
+          </div>
+          
+          <div style="text-align: center; margin-top: 30px; color: #718096; font-size: 12px;">
+            <p>© 2024 SnipStash. All rights reserved.</p>
+          </div>
+        </div>
+      `,
+    });
 
     res.status(200).json({ message: 'OTP sent successfully' });
   } catch (error) {
